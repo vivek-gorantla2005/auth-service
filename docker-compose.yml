@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGODB_URI=mongodb+srv://vivekg:vivekg@cluster0.4hfmy7k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - JWT_SECRET_KEY=20cb6b46dff52efd0b2bd5811342ab47976c7b211f7f7905f4a2bf6934abe337
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    container_name: jwt-auth-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
